@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Top 10 CS Students Ranking</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f3f7fb;
+      margin: 0;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #2b3a67;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 200px;
+    }
+
+    button {
+      background-color: #2b3a67;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #3f4c8b;
+    }
+
+    ol {
+      list-style-position: inside;
+      padding: 0;
+      margin-top: 30px;
+      width: 320px;
+    }
+
+    li {
+      background: #ffffff;
+      font-size: 18px;
+      margin: 10px 0;
+      padding: 12px 16px;
+      border-radius: 8px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    li:hover {
+      transform: scale(1.02);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .note {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* Notification Message */
+    .message {
+      position: fixed;
+      top: -60px; /* Start off-screen */
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 16px;
+      font-weight: bold;
+      color: #2b3a67;
+      background: #e3ecff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      display: none;
+      z-index: 1000;
+    }
+
+    /* Slide down animation */
+    .show {
+      display: block;
+      animation: slideDownFade 2s forwards;
+    }
+
+    @keyframes slideDownFade {
+      0% { top: -60px; opacity: 0; }
+      10% { top: 20px; opacity: 1; }
+      80% { top: 20px; opacity: 1; }
+      100% { top: -60px; opacity: 0; }
+    }
+
+    /* Fullscreen jumpscare */
+    .jumpscare {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('1.jpg') center/cover no-repeat;
+      z-index: 2000;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏆 Top 10 CS Тоглогчид</h1>
+
+  <form id="rankForm">
+    <input type="text" id="studentName" placeholder="Enter new student name" required>
+    <button type="submit">Add</button>
+  </form>
+
+  <ol id="rankingList"></ol>
+
+  <p class="note">TOP 10 л харагдана, нэр оруулах нь зөвхөн cosmetic effect.</p>
+  <div id="message" class="message"></div>
+  <div id="jumpscare" class="jumpscare"></div>
+
+  <script>
+    const form = document.getElementById('rankForm');
+    const input = document.getElementById('studentName');
+    const rankingList = document.getElementById('rankingList');
+    const messageBox = document.getElementById('message');
+    const jumpscare = document.getElementById('jumpscare');
+
+    // Predefined top 15 student names
+    const students = [
+      "suki",
+      "atu",
+      "serge",
+      "bataa",
+      "teju",
+      "enhee",
+      "busku",
+      "tsegts",
+      "anar",
+      "gunbee",
+      "c++",
+      "otgoo",
+      "munguu",
+      "hosoo",
+      "munhuu"
+    ];
+
+    // Track submissions for jumpscare
+    let submissionCount = 0;
+
+    // Render top 10
+    function displayRanking() {
+      rankingList.innerHTML = "";
+      students.slice(0, 10).forEach(student => {
+        const li = document.createElement("li");
+        li.textContent = student; // Automatic ol numbering
+        rankingList.appendChild(li);
+      });
+    }
+
+    // Cosmetic add
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = input.value.trim();
+      if (name === "") return;
+
+      submissionCount++;
+
+      // Show slide-down notification
+      messageBox.textContent = `✨ "${name}" дээр нэг оноо!`;
+      messageBox.classList.remove("show"); // Reset animation
+      void messageBox.offsetWidth; // Trigger reflow
+      messageBox.classList.add("show");
+
+      // Show jumpscare every 5 submissions
+      if (submissionCount % 5 === 0) {
+        jumpscare.style.display = "block";
+        setTimeout(() => {
+          jumpscare.style.display = "none";
+        }, 1500); // Show for 1.5s
+      }
+
+      // Reset input
+      input.value = "";
+    });
+
+    displayRanking();
+  </script>
+</body>
+</html>
